@@ -15,14 +15,13 @@ import com.myapp.utils.Question;
 public class QuestionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static QuestionDao questionDao = new QuestionDao();
-	private static int id = 1;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public QuestionServlet() {
 		super();
-		QuestionServlet.id++;
+		// QuestionServlet.id++;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -42,8 +41,7 @@ public class QuestionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int examId = QuestionServlet.id + 1;
-		System.out.println("examnIDIDIDIDDID: " + examId);
+		int examId = Integer.parseInt(request.getParameter("examId"));
 		String ques = request.getParameter("questionText");
 		String optionA = request.getParameter("optionA");
 		String optionB = request.getParameter("optionB");
