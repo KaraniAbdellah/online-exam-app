@@ -19,12 +19,36 @@ public class LoadQuestionsServlet extends HttpServlet {
 
     // GET: just load the page with exam dropdown
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
+
+    String examIdParam = request.getParameter("examId");
+    String page = request.getParameter("page");
+    String examName = request.getParameter("examName");
+
+    // If examId is present, load questions for that exam
+    if (examIdParam != null && !examIdParam.isEmpty()) {
+        int examId = Integer.parseInt(examIdParam);
+        List<Question> questionList = questionDao.getAllQuestions(examId);
+
+        request.setAttribute("examId", examId);
+        request.setAttribute("questionList", questionList);
+        request.setAttribute("examName", examName);
+
+        if ("examPage".equals(page)) {
+            // This is where your Start Exam button should go
+            request.getRequestDispatcher("examPage.jsp").forward(request, response);
+        } else {
+            ArrayList<Exam> examList = examDao.getAllExams();
+            request.setAttribute("examList", examList);
+            request.getRequestDispatcher("manageQuestions.jsp").forward(request, response);
+        }
+    } else {
+        // No examId = admin just loading the manage page
         ArrayList<Exam> examList = examDao.getAllExams();
         request.setAttribute("examList", examList);
         request.getRequestDispatcher("manageQuestions.jsp").forward(request, response);
     }
-
+}
     // POST: exam was selected, load questions + keep dropdown populated
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
