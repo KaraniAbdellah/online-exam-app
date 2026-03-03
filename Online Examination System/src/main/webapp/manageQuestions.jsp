@@ -26,8 +26,7 @@
 			<ul>
 				<li><a href="adminDashboard.jsp">Dashboard</a></li>
 				<li><a href="LoadExamsServlet?page=1">Manage Exams</a></li>
-				<li><a href="LoadExamsServlet?page=adminScores">Admin
-						Scores</a></li>
+				<li><a href="LoadExamsServlet?page=adminScores">Admin Scores</a></li>
 			</ul>
 		</nav>
 		<div class="content">
@@ -35,14 +34,15 @@
 			<form action="LoadQuestionsServlet" method="post">
 				<select id="examSelect" name="examId" onchange="this.form.submit()">
 					<option value="" disabled selected>Select Exam</option>
-					<!-- Exam options will be populated here -->
 					<%
 					ArrayList<Exam> examList = (ArrayList<Exam>) request.getAttribute("examList");
 					if (examList != null) {
 						for (Exam exam : examList) {
 					%>
-					<option value="<%=exam.getId()%>"><%=exam.getExamName()%></option>
-
+					<option value="<%= exam.getId() %>"
+						<%= String.valueOf(exam.getId()).equals(request.getParameter("examId")) ? "selected" : "" %>>
+						<%= exam.getExamName() %>
+					</option>
 					<%
 						}
 					}
@@ -66,8 +66,10 @@
 						for (Question question : questionList) {
 					%>
 					<tr>
-						<td><%=question.getQuestionId()%></td>
-						<td><%=question.getQuestion()%></td>
+						<td><%= question.getQuestionId() %></td>
+						<td><%= question.getQuestion() %></td>
+						<td><a href="QuestionServlet?action=edit&id=<%= question.getQuestionId() %>">Edit</a></td>
+						<td><a href="QuestionServlet?action=delete&id=<%= question.getQuestionId() %>">Delete</a></td>
 					</tr>
 					<%
 						}
@@ -79,11 +81,11 @@
 		</div>
 		<%
 		} else {
-		response.sendRedirect("login.jsp");
-			}
+			response.sendRedirect("login.jsp");
+		}
 		} else {
-		response.sendRedirect("login.jsp");
-			}
+			response.sendRedirect("login.jsp");
+		}
 		%>
 	</div>
 	<footer>&copy; 2026 Online Examination System</footer>
@@ -96,20 +98,25 @@
 			<form action="QuestionServlet" method="post">
 
 				<input type="hidden" id="examId" name="examId"
-					value="<%=request.getAttribute("examId")%>"> <label
-					for="questionText">Question:</label>
+					value="<%= request.getAttribute("examId") != null ? request.getAttribute("examId") : "" %>">
+
+				<label for="questionText">Question:</label>
 				<textarea id="questionText" name="questionText" required></textarea>
 
-				<label for="optionA">Option A:</label> <input type="text"
-					id="optionA" name="optionA" required> <label for="optionB">Option
-					B:</label> <input type="text" id="optionB" name="optionB" required>
+				<label for="optionA">Option A:</label>
+				<input type="text" id="optionA" name="optionA" required>
 
-				<label for="optionC">Option C:</label> <input type="text"
-					id="optionC" name="optionC" required> <label for="optionD">Option
-					D:</label> <input type="text" id="optionD" name="optionD" required>
+				<label for="optionB">Option B:</label>
+				<input type="text" id="optionB" name="optionB" required>
 
-				<label for="correctOption">Correct Option:</label> <select
-					id="correctOption" name="correctOption">
+				<label for="optionC">Option C:</label>
+				<input type="text" id="optionC" name="optionC" required>
+
+				<label for="optionD">Option D:</label>
+				<input type="text" id="optionD" name="optionD" required>
+
+				<label for="correctOption">Correct Option:</label>
+				<select id="correctOption" name="correctOption">
 					<option value="A">A</option>
 					<option value="B">B</option>
 					<option value="C">C</option>

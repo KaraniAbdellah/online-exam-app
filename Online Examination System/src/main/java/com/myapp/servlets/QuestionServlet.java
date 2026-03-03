@@ -1,9 +1,9 @@
 package com.myapp.servlets;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import com.myapp.dao.QuestionDao;
@@ -15,19 +15,21 @@ import com.myapp.utils.Question;
 public class QuestionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static QuestionDao questionDao = new QuestionDao();
+	private static int id = 1;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public QuestionServlet() {
 		super();
+		QuestionServlet.id++;
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
-	 */
+	*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -40,7 +42,8 @@ public class QuestionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int examId = Integer.parseInt(request.getParameter("examId"));
+		int examId = QuestionServlet.id + 1;
+		System.out.println("examnIDIDIDIDDID: " + examId);
 		String ques = request.getParameter("questionText");
 		String optionA = request.getParameter("optionA");
 		String optionB = request.getParameter("optionB");
